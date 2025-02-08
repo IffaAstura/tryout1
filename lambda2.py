@@ -122,7 +122,7 @@ def save_to_rds(data_list):
 def save_to_s3(data_list):
     S3_BUCKET_NAME = get_ssm_parameter('/tryout1/S3BucketName')
 
-    file_name = f"processed_events_{datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')}.json"
+    file_name = f"data-mateng/processed_events_{datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')}.json"
     s3.put_object(
         Bucket=S3_BUCKET_NAME,
         Key=file_name,
