@@ -101,6 +101,9 @@ def save_to_rds(data_list):
     try:
         with conn.cursor() as cursor:
             for data in data_list:
+                datetime_str = data['timestamp']
+                datetime_obj = datetime.datetime.strptime(datetime_str, '%Y-%m-%dT%H:%M:%SZ')
+                formatted_datetime = datetime_obj.strftime('%Y-%m-%d %H:%M:%S')                
                 sql = f"""
                 INSERT INTO {RDS_TABLE} (device_id, event_type, value, value_celsius, timestamp)
                 VALUES (%s, %s, %s, %s, %s)
@@ -110,7 +113,7 @@ def save_to_rds(data_list):
                     data["event_type"],
                     data["value"],
                     data.get("value_celsius"),
-                    data["timestamp"]
+                    formatted_datetime
                 ))
         conn.commit()
     except Exception as e:
