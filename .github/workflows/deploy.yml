@@ -19,13 +19,17 @@ jobs:
         node-version: '20'
     
     - name: Install dependencies
-      run: npm install
+      run: |
+        cd frontend
+        npm install
 
     - name: Build zip
-      run: zip -r tryout1frontend.zip . -x "node_modules/*" ".env"
+      run: |
+        cd frontend
+        zip -r ../tryout1frontend.zip . -x "node_modules/*" ".env"
 
     - name: Upload build artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: tryout1frontend
         path: tryout1frontend.zip
@@ -39,7 +43,7 @@ jobs:
 
     - name: Upload to S3
       run: |
-        aws s3 cp tryout1frontend.zip s3://${{ secrets.S3_BUCKET_NAME }}/tryout1frontend.zip
+        aws s3 cp tryout1frontend.zip s3://${{ secrets.S3_BUCKET_NAME }}/eb-ap/tryout1frontend.zip
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -52,9 +56,9 @@ jobs:
 
     steps:
     - name: Download build artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: latihan
+        name: tryout1frontend
     
     - name: Deploy to Elastic Beanstalk
       env:
@@ -70,7 +74,7 @@ jobs:
         aws elasticbeanstalk create-application-version \
           --application-name ${{ secrets.EB_APP_NAME }} \
           --version-label $VERSION_LABEL \
-          --source-bundle S3Bucket=${{ secrets.S3_BUCKET_NAME }},S3Key=tryout1frontend.zip
+          --source-bundle S3Bucket=${{ secrets.S3_BUCKET_NAME }},S3Key=eb-ap/tryout1frontend.zip
         aws elasticbeanstalk update-environment \
           --environment-name ${{ secrets.EB_ENV_NAME }} \
           --version-label $VERSION_LABEL
