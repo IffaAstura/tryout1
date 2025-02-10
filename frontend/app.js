@@ -3,7 +3,7 @@ const mysql = require('mysql2/promise');
 const AWS = require('aws-sdk');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Konfigurasi AWS SSM
 const ssm = new AWS.SSM({ region: 'us-east-1' }); // Ganti region sesuai kebutuhan
@@ -26,7 +26,11 @@ async function getDBConfig() {
     return { host, user, password, database, table };
 }
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+  });  
+
+app.get('/data', async (req, res) => {
     try {
         const dbConfig = await getDBConfig();
         const connection = await mysql.createConnection({
