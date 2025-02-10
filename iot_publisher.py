@@ -2,16 +2,19 @@ import requests
 import json
 import time
 import random
+from decimal import Decimal
+import random
+
 
 # Ganti dengan URL API Gateway kamu
-API_GATEWAY_URL = "https://your-api-id.execute-api.region.amazonaws.com/prod/events"
+API_GATEWAY_URL = "https://uk62m94oi3.execute-api.us-east-1.amazonaws.com/prod/events"
 
 # Fungsi untuk membuat data event random
 def generate_event():
     return {
         "device_id": f"device-{random.randint(1, 100)}",
         "event_type": random.choice(["temperature", "humidity", "motion"]),
-        "value": round(random.uniform(10.0, 100.0), 2),
+        "value": str(round(Decimal(random.randint(1000, 10000)) / 100, 2)),
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     }
 
