@@ -7,7 +7,7 @@ import random
 
 
 # Ganti dengan URL API Gateway kamu
-API_GATEWAY_URL = "https://qlzku73cyl.execute-api.us-east-1.amazonaws.com/prod/events"
+API_GATEWAY_URL = "https://te0vfxjy7h.execute-api.us-east-1.amazonaws.com/prod/event"
 
 # Fungsi untuk membuat data event random
 def generate_event():
